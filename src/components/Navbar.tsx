@@ -2,12 +2,19 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Search, Briefcase, Heart, User, Menu, X, SparklesIcon } from "lucide-react";
+import { Search, Briefcase, Heart, User, Menu, X, SparklesIcon, LogOut } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { AuthModals } from "./AuthModals";
+import { UserDropdown } from "./UserDropdown";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
 
   // Handle scroll effect
   useEffect(() => {
@@ -29,6 +36,16 @@ export const Navbar = () => {
     { name: "Brands", path: "/brands", icon: Heart },
     { name: "Profile", path: "/profile", icon: User },
   ];
+
+  const openSignIn = () => {
+    setAuthMode('signin');
+    setIsAuthModalOpen(true);
+  };
+
+  const openSignUp = () => {
+    setAuthMode('signup');
+    setIsAuthModalOpen(true);
+  };
 
   return (
     <header
@@ -78,9 +95,18 @@ export const Navbar = () => {
               <Search className="w-4 h-4 mr-1" />
               Search
             </Button>
-            <Button size="sm" className="ml-2 bg-gradient-candy hover:opacity-90 transition-opacity">
-              Sign In
-            </Button>
+            
+            {isAuthenticated ? (
+              <UserDropdown />
+            ) : (
+              <Button 
+                size="sm" 
+                className="ml-2 bg-gradient-candy hover:opacity-90 transition-opacity"
+                onClick={openSignIn}
+              >
+                Sign In
+              </Button>
+            )}
           </nav>
 
           {/* Mobile menu button */}
@@ -128,13 +154,41 @@ export const Navbar = () => {
                 <Search className="w-4 h-4 mr-2" />
                 Search Jobs
               </Button>
-              <Button className="w-full bg-gradient-candy hover:opacity-90 transition-opacity">
-                Sign In
-              </Button>
+              
+              {isAuthenticated ? (
+                <Button 
+                  className="w-full justify-start bg-gradient-candy hover:opacity-90 transition-opacity"
+                  onClick={() => {
+                    const { signOut } = useAuth();
+                    signOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Button 
+                  className="w-full bg-gradient-candy hover:opacity-90 transition-opacity"
+                  onClick={() => {
+                    openSignIn();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         </div>
       )}
+
+      {/* Auth Modals */}
+      <AuthModals 
+        initialMode={authMode}
+        isOpen={isAuthModalOpen} 
+        onOpenChange={setIsAuthModalOpen} 
+      />
     </header>
   );
 };
