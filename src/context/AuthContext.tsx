@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define user type
@@ -26,7 +27,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => void;
-  updateUser: (updatedUser: User) => Promise<void>;
+  updateUser: (updatedUser: User) => Promise<User>; // Changed return type from void to User
   error: string | null;
 }
 
@@ -38,7 +39,9 @@ const AuthContext = createContext<AuthContextType>({
   signIn: async () => {},
   signUp: async () => {},
   signOut: () => {},
-  updateUser: async () => {},
+  updateUser: async () => {
+    return {} as User; // Updated to return a User object
+  },
   error: null,
 });
 
