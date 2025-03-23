@@ -29,46 +29,56 @@ export const Layout = ({ children }: LayoutProps) => {
   }, [location.pathname]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-bgb-50 to-bgb-100">
+    <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="hidden md:block">
+        <div className="blob blob-nebula w-[500px] h-[500px] top-[10%] right-[5%] animate-blob" style={{ animationDelay: '0s' }}></div>
+        <div className="blob blob-coral w-[400px] h-[400px] top-[40%] left-[5%] animate-blob" style={{ animationDelay: '1s' }}></div>
+        <div className="blob blob-mint w-[600px] h-[600px] bottom-[10%] right-[15%] animate-blob" style={{ animationDelay: '2s' }}></div>
+      </div>
+      
+      {/* Background mesh pattern */}
+      <div className="absolute inset-0 bg-mesh-pattern opacity-50 pointer-events-none"></div>
+      
       <Navbar />
       <main 
         id="main-content" 
-        className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        className="relative flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10"
       >
         {children}
       </main>
-      <footer className="w-full py-6 px-4 bg-bgb-800 text-white">
+      <footer className="relative w-full py-6 px-4 bg-gradient-to-r from-nebula-800 to-nebula-900 text-white z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">Big Green Bag</h3>
-              <p className="text-bgb-300 text-sm">
+              <p className="text-white/70 text-sm">
                 Connecting Shopify experts with the best brands in ecommerce.
               </p>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><a href="/" className="text-bgb-300 hover:text-white transition-colors text-sm">Home</a></li>
-                <li><a href="/jobs" className="text-bgb-300 hover:text-white transition-colors text-sm">Browse Jobs</a></li>
-                <li><a href="/brands" className="text-bgb-300 hover:text-white transition-colors text-sm">Brands</a></li>
-                <li><a href="/profile" className="text-bgb-300 hover:text-white transition-colors text-sm">My Profile</a></li>
+                <li><a href="/" className="text-white/70 hover:text-white transition-colors text-sm">Home</a></li>
+                <li><a href="/jobs" className="text-white/70 hover:text-white transition-colors text-sm">Browse Jobs</a></li>
+                <li><a href="/brands" className="text-white/70 hover:text-white transition-colors text-sm">Brands</a></li>
+                <li><a href="/profile" className="text-white/70 hover:text-white transition-colors text-sm">My Profile</a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
-              <p className="text-bgb-300 text-sm mb-2">
+              <p className="text-white/70 text-sm mb-2">
                 Have questions? Reach out to us.
               </p>
               <a 
                 href="mailto:hello@biggreenbag.com" 
-                className="text-sm inline-block px-4 py-2 bg-primary/90 text-white rounded-md hover:bg-primary transition-colors"
+                className="text-sm inline-block px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-md transition-colors"
               >
                 Contact Us
               </a>
             </div>
           </div>
-          <div className="mt-8 pt-6 border-t border-bgb-700 text-center text-bgb-400 text-sm">
+          <div className="mt-8 pt-6 border-t border-white/10 text-center text-white/40 text-sm">
             © {new Date().getFullYear()} Big Green Bag. All rights reserved.
           </div>
         </div>

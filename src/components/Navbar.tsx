@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Search, Briefcase, Heart, User, Menu, X } from "lucide-react";
+import { Search, Briefcase, Heart, User, Menu, X, SparklesIcon } from "lucide-react";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,7 +34,7 @@ export const Navbar = () => {
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         isScrolled 
-          ? "bg-white/80 backdrop-blur-md shadow-sm" 
+          ? "bg-white/70 backdrop-blur-lg shadow-sm" 
           : "bg-transparent"
       }`}
     >
@@ -46,10 +46,10 @@ export const Navbar = () => {
               className="flex items-center space-x-2"
               aria-label="Big Green Bag home"
             >
-              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-shopify to-shopify-dark flex items-center justify-center">
-                <span className="text-white font-bold text-sm">BGB</span>
+              <div className="w-10 h-10 rounded-xl bg-gradient-candy flex items-center justify-center">
+                <SparklesIcon className="h-5 w-5 text-white" />
               </div>
-              <span className="font-display font-semibold text-xl">Big Green Bag</span>
+              <span className="font-display font-bold text-xl">Big Green Bag</span>
             </Link>
           </div>
 
@@ -59,10 +59,10 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors relative group ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors relative group ${
                   location.pathname === link.path
-                    ? "text-primary"
-                    : "text-bgb-700 hover:text-primary"
+                    ? "text-nebula"
+                    : "text-bgb-700 hover:text-nebula"
                 }`}
               >
                 <div className="flex items-center space-x-1">
@@ -70,15 +70,17 @@ export const Navbar = () => {
                   <span>{link.name}</span>
                 </div>
                 {location.pathname === link.path && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full" />
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-candy rounded-full" />
                 )}
               </Link>
             ))}
-            <Button variant="outline" size="sm" className="ml-2">
+            <Button variant="outline" size="sm" className="ml-2 border-nebula-200 text-nebula-700">
               <Search className="w-4 h-4 mr-1" />
               Search
             </Button>
-            <Button size="sm" className="ml-2">Sign In</Button>
+            <Button size="sm" className="ml-2 bg-gradient-candy hover:opacity-90 transition-opacity">
+              Sign In
+            </Button>
           </nav>
 
           {/* Mobile menu button */}
@@ -88,6 +90,7 @@ export const Navbar = () => {
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
+              className="text-nebula"
             >
               {isMobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -101,7 +104,7 @@ export const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 animate-in">
+        <div className="md:hidden bg-white/90 backdrop-blur-md border-t border-gray-200 animate-in">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
               <Link
@@ -109,8 +112,8 @@ export const Navbar = () => {
                 to={link.path}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   location.pathname === link.path
-                    ? "bg-accent text-primary"
-                    : "text-bgb-700 hover:bg-accent/50 hover:text-primary"
+                    ? "bg-nebula-50 text-nebula"
+                    : "text-bgb-700 hover:bg-nebula-50 hover:text-nebula"
                 }`}
                 style={{ animationDelay: `${navLinks.indexOf(link) * 50}ms` }}
               >
@@ -121,11 +124,13 @@ export const Navbar = () => {
               </Link>
             ))}
             <div className="pt-2 flex flex-col space-y-2">
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start border-nebula-200 text-nebula-700">
                 <Search className="w-4 h-4 mr-2" />
                 Search Jobs
               </Button>
-              <Button className="w-full">Sign In</Button>
+              <Button className="w-full bg-gradient-candy hover:opacity-90 transition-opacity">
+                Sign In
+              </Button>
             </div>
           </div>
         </div>
