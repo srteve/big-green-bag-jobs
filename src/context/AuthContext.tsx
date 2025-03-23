@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define user type
@@ -6,7 +5,17 @@ export interface User {
   id: string;
   email: string;
   name?: string;
+  title?: string;
   avatar?: string;
+  location?: string;
+  website?: string;
+  bio?: string;
+  socialLinks?: {
+    linkedin?: string;
+    github?: string;
+    twitter?: string;
+    instagram?: string;
+  };
 }
 
 // Define authentication context type
@@ -17,6 +26,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => void;
+  updateUser: (updatedUser: User) => Promise<void>;
   error: string | null;
 }
 
@@ -28,6 +38,7 @@ const AuthContext = createContext<AuthContextType>({
   signIn: async () => {},
   signUp: async () => {},
   signOut: () => {},
+  updateUser: async () => {},
   error: null,
 });
 
@@ -127,6 +138,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Update user profile
+  const updateUser = async (updatedUser: User) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      // Get existing users
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      
+      // Find and update the user in the "database"
+      const updatedUsers = users.map((u: any) => 
+        u.id === updatedUser.id ? { ...u, ...updatedUser } : u
+      );
+      
+      // Save updated users array
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      
+      // Update current user session
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      
+      return updatedUser;
+    } catch (error) {
+      setError((error as Error).message);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Sign out function
   const signOut = () => {
     localStorage.removeItem('user');
@@ -141,6 +182,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signIn,
     signUp,
     signOut,
+    updateUser,
     error,
   };
 

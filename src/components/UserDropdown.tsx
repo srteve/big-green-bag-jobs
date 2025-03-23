@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, LogOut, Heart, Briefcase, Settings } from 'lucide-react';
 
 export const UserDropdown = () => {
@@ -32,7 +32,7 @@ export const UserDropdown = () => {
         <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-nebula-100 hover:bg-nebula-50">
           <Avatar className="h-9 w-9">
             {user.avatar ? (
-              <img src={user.avatar} alt={user.name || user.email} />
+              <AvatarImage src={user.avatar} alt={user.name || user.email} />
             ) : (
               <AvatarFallback className="bg-nebula-100 text-nebula-700">
                 {initials}

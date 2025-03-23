@@ -1,10 +1,28 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExperienceTimeline, ExperienceProps } from "./ExperienceTimeline";
-import { Upload, Mail, MapPin, Globe, Briefcase, Download, Edit, FilePlus, Heart } from "lucide-react";
+import { ProfileEditor } from "./ProfileEditor";
+import { useAuth } from "@/context/AuthContext";
+import {
+  Upload,
+  Mail,
+  MapPin,
+  Globe,
+  Briefcase,
+  Download,
+  Edit,
+  FilePlus,
+  Heart,
+  Linkedin,
+  Github,
+  Twitter,
+  Instagram
+} from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 // Sample experience data
 const sampleExperiences: ExperienceProps[] = [
@@ -35,6 +53,8 @@ const sampleExperiences: ExperienceProps[] = [
 export const ProfileSection = () => {
   const [activeTab, setActiveTab] = useState("experience");
   const [uploadingCV, setUploadingCV] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { user } = useAuth();
 
   const handleFileUpload = () => {
     setUploadingCV(true);
@@ -44,6 +64,17 @@ export const ProfileSection = () => {
     }, 2000);
   };
 
+  // Prepare user initials for avatar fallback
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .map(part => part[0])
+        .join('')
+    : user?.email[0].toUpperCase();
+
+  // Social media links
+  const socialLinks = user?.socialLinks || {};
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Left Column - Profile Summary */}
@@ -52,42 +83,90 @@ export const ProfileSection = () => {
           <CardContent className="p-6">
             <div className="flex flex-col items-center text-center">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center text-white text-2xl font-semibold">
-                  JD
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center text-white text-2xl font-semibold">
+                  {user?.avatar ? (
+                    <img 
+                      src={user.avatar} 
+                      alt={user.name || 'User'} 
+                      className="w-full h-full object-cover" 
+                    />
+                  ) : (
+                    initials
+                  )}
                 </div>
-                <button className="absolute bottom-0 right-0 rounded-full bg-accent p-1.5 border border-primary text-primary">
+                <button 
+                  className="absolute bottom-0 right-0 rounded-full bg-accent p-1.5 border border-primary text-primary"
+                  onClick={() => setIsEditing(true)}
+                >
                   <Edit className="h-4 w-4" />
                 </button>
               </div>
               
-              <h2 className="mt-4 text-xl font-semibold">Jane Doe</h2>
-              <p className="text-bgb-600">Senior Shopify Developer</p>
+              <h2 className="mt-4 text-xl font-semibold">{user?.name || "User"}</h2>
+              <p className="text-bgb-600">{user?.title || "Add a title"}</p>
               
               <div className="mt-4 flex flex-wrap justify-center gap-1.5">
                 <Badge>Available for work</Badge>
-                <Badge variant="outline">Remote</Badge>
+                <Badge variant="outline">{user?.location || "Remote"}</Badge>
               </div>
               
               <div className="mt-6 w-full space-y-3 text-sm">
                 <div className="flex items-center text-bgb-600">
                   <Mail className="h-4 w-4 mr-2 text-bgb-400" />
-                  <span>jane.doe@example.com</span>
+                  <span>{user?.email}</span>
                 </div>
-                <div className="flex items-center text-bgb-600">
-                  <MapPin className="h-4 w-4 mr-2 text-bgb-400" />
-                  <span>San Francisco, CA</span>
-                </div>
-                <div className="flex items-center text-bgb-600">
-                  <Globe className="h-4 w-4 mr-2 text-bgb-400" />
-                  <a href="#" className="text-primary hover:underline">
-                    janedoe.com
-                  </a>
-                </div>
+                {user?.location && (
+                  <div className="flex items-center text-bgb-600">
+                    <MapPin className="h-4 w-4 mr-2 text-bgb-400" />
+                    <span>{user.location}</span>
+                  </div>
+                )}
+                {user?.website && (
+                  <div className="flex items-center text-bgb-600">
+                    <Globe className="h-4 w-4 mr-2 text-bgb-400" />
+                    <a href={user.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {user.website.replace(/^https?:\/\/(www\.)?/, '')}
+                    </a>
+                  </div>
+                )}
                 <div className="flex items-center text-bgb-600">
                   <Briefcase className="h-4 w-4 mr-2 text-bgb-400" />
                   <span>4+ years experience</span>
                 </div>
               </div>
+              
+              {/* Social Links */}
+              {Object.values(socialLinks).some(link => link) && (
+                <div className="mt-4 flex justify-center space-x-3">
+                  {socialLinks.linkedin && (
+                    <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-bgb-600 hover:text-primary">
+                      <Linkedin className="h-5 w-5" />
+                    </a>
+                  )}
+                  {socialLinks.github && (
+                    <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-bgb-600 hover:text-primary">
+                      <Github className="h-5 w-5" />
+                    </a>
+                  )}
+                  {socialLinks.twitter && (
+                    <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-bgb-600 hover:text-primary">
+                      <Twitter className="h-5 w-5" />
+                    </a>
+                  )}
+                  {socialLinks.instagram && (
+                    <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="text-bgb-600 hover:text-primary">
+                      <Instagram className="h-5 w-5" />
+                    </a>
+                  )}
+                </div>
+              )}
+              
+              {/* Bio */}
+              {user?.bio && (
+                <div className="mt-6 w-full">
+                  <p className="text-sm text-bgb-600 text-left">{user.bio}</p>
+                </div>
+              )}
               
               <div className="mt-6 w-full space-y-3">
                 <h3 className="font-medium text-bgb-900">Skills</h3>
@@ -212,6 +291,16 @@ export const ProfileSection = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Edit Profile Dialog */}
+      <Dialog open={isEditing} onOpenChange={setIsEditing}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+          </DialogHeader>
+          <ProfileEditor onClose={() => setIsEditing(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
