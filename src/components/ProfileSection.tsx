@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExperienceTimeline, ExperienceProps } from "./ExperienceTimeline";
-import { Upload, Mail, MapPin, Globe, Briefcase, Download, Edit, FilePlus } from "lucide-react";
+import { Upload, Mail, MapPin, Globe, Briefcase, Download, Edit, FilePlus, Heart } from "lucide-react";
 
 // Sample experience data
 const sampleExperiences: ExperienceProps[] = [
