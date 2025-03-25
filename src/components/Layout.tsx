@@ -1,5 +1,6 @@
+
 import { ReactNode, useEffect } from "react";
-import { Navbar } from "./Navbar";
+import Navbar from "./Navbar"; // Changed from import { Navbar } from "./Navbar";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
