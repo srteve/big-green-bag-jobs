@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Jobs from "./pages/Jobs";
 import Profile from "./pages/Profile";
 import Brands from "./pages/Brands";
+import PremiumServices from "./pages/PremiumServices";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/brands" element={<Brands />} />
+              <Route path="/premium-services" element={<PremiumServices />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>

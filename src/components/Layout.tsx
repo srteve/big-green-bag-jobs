@@ -1,7 +1,7 @@
-
 import { ReactNode, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface LayoutProps {
   children: ReactNode;
@@ -59,10 +59,11 @@ export const Layout = ({ children }: LayoutProps) => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><a href="/" className="text-white/70 hover:text-white transition-colors text-sm">Home</a></li>
-                <li><a href="/jobs" className="text-white/70 hover:text-white transition-colors text-sm">Browse Jobs</a></li>
-                <li><a href="/brands" className="text-white/70 hover:text-white transition-colors text-sm">Brands</a></li>
-                <li><a href="/profile" className="text-white/70 hover:text-white transition-colors text-sm">My Profile</a></li>
+                <li><Link to="/" className="text-white/70 hover:text-white transition-colors text-sm">Home</Link></li>
+                <li><Link to="/jobs" className="text-white/70 hover:text-white transition-colors text-sm">Browse Jobs</Link></li>
+                <li><Link to="/brands" className="text-white/70 hover:text-white transition-colors text-sm">Brands</Link></li>
+                <li><Link to="/premium-services" className="text-white/70 hover:text-white transition-colors text-sm">Premium Services</Link></li>
+                <li><Link to="/profile" className="text-white/70 hover:text-white transition-colors text-sm">My Profile</Link></li>
               </ul>
             </div>
             <div>
